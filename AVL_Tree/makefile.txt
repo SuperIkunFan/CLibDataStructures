@@ -1,0 +1,24 @@
+Target := AVL_Tree
+CC := gcc
+
+Path := $(shell pwd)
+
+SRCS := main.c AVL_Tree.c
+OBJS := $(SRCS:.c=.o)
+${warning ${OBJS}}
+
+
+${Target}: ${OBJS}
+	${CC} ${OBJS} -g -o ${Target} 
+
+${OBJS}:${SRCS}
+	${CC}  -g -c ${SRCS}
+
+
+.PHONY: clean Test
+clean:
+	rm -f ./*.o
+	rm ./${Target}
+	
+Test:
+	valgrind --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=all ./${Target}
